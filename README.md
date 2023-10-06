@@ -1,12 +1,11 @@
 # World Cup Scoreboard 
 
-The task requirements simple and straightforward so it's hard to not overengineer. I tried to keep it simple but have a decent level of OOP structure.
-There are plenty of ways to develop solution to a production grade such as abstract the storage of matches to keep them in external storage, handle multithreading and make the code extensible to accommodate different type of matches.
+The task requirements are simple and straightforward so it's hard not to overengineer. I tried to keep it simple but have a decent OOP structure. There are plenty of ways to develop solutions to a production grade such as abstracting the storage of matches to keep them in external storage, handling multithreading, and making the code extensible to accommodate different types of matches.
 
 The workflow I had in mind while implementing:
-- Match is created by library user and should be registered in Competition(WorldCup)
-- Then user keeps the ID of match or keep the instance of Match object to update the score
-- The Scoreboard class represents the summary of matches and encapsulated the "display" logic
+- The match is created by the library user and should be registered in Competition(World Cup)
+- user keeps the ID of the match or keeps the instance of Match object to update the score
+- The Scoreboard class represents the summary of matches and encapsulates the "display" logic
 
 ```
     var argFra = new Match(new Team("Argentina"), new Team("France"));
