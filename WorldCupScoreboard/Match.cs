@@ -9,23 +9,33 @@ namespace WorldCupScoreboard
         Finished
     }
 
+    public enum MatchStage{
+        Group,
+        PlayOff
+    }
+
     public class Match 
     {
-        public Guid Id { get; private set; }
+        public string Id { get {
+            return $"{Stage}.{Home.Name}-{Away.Name}" ;
+        } }
         public byte HomeScore { get; private set; }
         public byte AwayScore { get; private set; }
         public DateTime TimeStarted { get; private set; }
         public MatchState State { get; private set; }
         public Team Home { get; }
-        public Team Away { get; }
+        public Team Away { get; }                         
+        public MatchStage Stage{ get; set; }                    
 
-        public Match(Team home, Team away)
-        {
-            Id = Guid.NewGuid();
+        public Match(Team home, Team away, MatchStage stage = MatchStage.Group)
+        {            
             this.Home = home;
             this.Away = away;
+            this.Stage = stage;
         }
 
+
+        // Set absolute score (pretend that penalties are not a thing)
         public void SetScore(byte home, byte away)
         {
             if (State!= MatchState.Running)
@@ -57,7 +67,7 @@ namespace WorldCupScoreboard
 
         public override string ToString()
         {
-            return $"{Home.Name} {HomeScore} - {AwayScore} {Away.Name}";
+            return Id;
         }
     }
 }
