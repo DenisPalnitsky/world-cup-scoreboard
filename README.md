@@ -1,6 +1,13 @@
 # World Cup Scoreboard 
 
+<div align="center">
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-98%25-success?style=flat)
+</div>
+
+
 The task requirements are simple and straightforward so it's hard not to overengineer. I tried to keep it simple but have a decent OOP structure. There are plenty of ways to develop solutions to a production grade such as abstracting the storage of matches to keep them in external storage, handling multithreading, and making the code extensible to accommodate different types of matches.
+
+## How to use
 
 The workflow I had in mind while implementing:
 - The match is created by the library user and should be registered in Competition(World Cup)
