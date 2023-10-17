@@ -4,12 +4,32 @@ using System.Linq;
 
 namespace WorldCupScoreboard
 {
-    /// <summary>
-    /// Represents summary of a score table 
-    /// </summary>
+    // Represents a list of matches in one competition 
+    // We assume that storage of matches is not part of the requirements. Otherwise we would need to abstract it
     public class Scoreboard
-    {
-        // Comparer used to sort matches by score and time
+    {       
+        // we keep matches in a dictionary to avoid duplicates
+        // In prod settings we would want to abstract the storage of matches in a repository
+        // but to keep it simple we will have storage in a Competition class
+        private IDictionary<string,Match> matches;
+
+        public Scoreboard()
+        {
+            matches = new Dictionary<string, Match>();
+        }
+
+        public void RegisterMatch(Match match)
+        {                                            
+            try 
+            {                
+                matches.Add(match.Id, match);
+            }
+            catch(ArgumentException ex) // we use match ID (stage+teams) to ensure that matches are not duplicated
+            {
+                throw new InvalidOperationException("Match already registered", ex);
+            }            
+        }
+
         private class MatchComparer : IComparer<Match>
         {
             public int Compare(Match x, Match y)
@@ -25,21 +45,9 @@ namespace WorldCupScoreboard
             }
         }
 
-
-        public IEnumerable<Match> Matches { get; private set; }
-
-        // Private constructor to prevent creating summary objects without using the factory method
-        private Scoreboard()
-        {           
-        }
-         
-
-        // Creates a summary object with the list of matches that are in progress and sorts them by score and time
-        // This method should be called by the Scoreboard class and should not be public
-        internal static Scoreboard BuildScoreboard(IEnumerable<Match> matchList)
-        {                                   
-            return new Scoreboard() { Matches = matchList.Order(new MatchComparer()) };
+        public IEnumerable<Match> ListInProgress()
+        {
+            return matches.Values.Where(x => x.State == MatchState.Running).Order(new MatchComparer());
         }
     }
-
 }
